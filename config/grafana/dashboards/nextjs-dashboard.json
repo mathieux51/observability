@@ -101,12 +101,12 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "sum(rate(otel_http_server_duration_milliseconds_count{job=\"python-service\"}[1m])) by (http_route)",
+          "expr": "sum(rate(otel_http_server_duration_milliseconds_count{job=\"nextjs-frontend\"}[1m])) by (http_route)",
           "legendFormat": "{{http_route}}",
           "refId": "A"
         }
       ],
-      "title": "Python Service - Request Rate by Endpoint",
+      "title": "Next.js Frontend - Request Rate by Route",
       "type": "timeseries"
     },
     {
@@ -196,7 +196,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "histogram_quantile(0.50, sum(rate(otel_http_server_duration_milliseconds_bucket{job=\"python-service\"}[5m])) by (le, http_route))",
+          "expr": "histogram_quantile(0.50, sum(rate(otel_http_server_duration_milliseconds_bucket{job=\"nextjs-frontend\"}[5m])) by (le, http_route))",
           "legendFormat": "P50 - {{http_route}}",
           "refId": "A"
         },
@@ -205,7 +205,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "histogram_quantile(0.95, sum(rate(otel_http_server_duration_milliseconds_bucket{job=\"python-service\"}[5m])) by (le, http_route))",
+          "expr": "histogram_quantile(0.95, sum(rate(otel_http_server_duration_milliseconds_bucket{job=\"nextjs-frontend\"}[5m])) by (le, http_route))",
           "legendFormat": "P95 - {{http_route}}",
           "refId": "B"
         },
@@ -214,12 +214,12 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "histogram_quantile(0.99, sum(rate(otel_http_server_duration_milliseconds_bucket{job=\"python-service\"}[5m])) by (le, http_route))",
+          "expr": "histogram_quantile(0.99, sum(rate(otel_http_server_duration_milliseconds_bucket{job=\"nextjs-frontend\"}[5m])) by (le, http_route))",
           "legendFormat": "P99 - {{http_route}}",
           "refId": "C"
         }
       ],
-      "title": "Python Service - Response Time Percentiles",
+      "title": "Next.js Frontend - Response Time Percentiles",
       "type": "timeseries"
     },
     {
@@ -248,7 +248,7 @@
       },
       "gridPos": {
         "h": 4,
-        "w": 4,
+        "w": 6,
         "x": 0,
         "y": 9
       },
@@ -272,11 +272,11 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "sum(increase(otel_http_server_duration_milliseconds_count{job=\"python-service\"}[1h]))",
+          "expr": "sum(increase(otel_http_server_duration_milliseconds_count{job=\"nextjs-frontend\"}[1h]))",
           "refId": "A"
         }
       ],
-      "title": "Total Requests (1h)",
+      "title": "Total Page Views (1h)",
       "type": "stat"
     },
     {
@@ -313,8 +313,8 @@
       },
       "gridPos": {
         "h": 4,
-        "w": 4,
-        "x": 4,
+        "w": 6,
+        "x": 6,
         "y": 9
       },
       "id": 4,
@@ -337,11 +337,11 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "histogram_quantile(0.95, sum(rate(otel_http_server_duration_milliseconds_bucket{job=\"python-service\"}[5m])) by (le))",
+          "expr": "histogram_quantile(0.95, sum(rate(otel_http_server_duration_milliseconds_bucket{job=\"nextjs-frontend\"}[5m])) by (le))",
           "refId": "A"
         }
       ],
-      "title": "P95 Latency",
+      "title": "P95 Page Load Time",
       "type": "stat"
     },
     {
@@ -389,8 +389,8 @@
       },
       "gridPos": {
         "h": 4,
-        "w": 4,
-        "x": 8,
+        "w": 6,
+        "x": 12,
         "y": 9
       },
       "id": 5,
@@ -413,7 +413,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "up{job=\"python-service\"}",
+          "expr": "up{job=\"nextjs-frontend\"}",
           "refId": "A"
         }
       ],
@@ -443,8 +443,8 @@
       },
       "gridPos": {
         "h": 8,
-        "w": 12,
-        "x": 12,
+        "w": 6,
+        "x": 18,
         "y": 9
       },
       "id": 6,
@@ -452,7 +452,7 @@
         "displayLabels": ["percent"],
         "legend": {
           "displayMode": "table",
-          "placement": "right",
+          "placement": "bottom",
           "showLegend": true,
           "values": ["value"]
         },
@@ -473,13 +473,99 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "sum by(http_status_code) (increase(otel_http_server_duration_milliseconds_count{job=\"python-service\"}[1h]))",
+          "expr": "sum by(http_status_code) (increase(otel_http_server_duration_milliseconds_count{job=\"nextjs-frontend\"}[1h]))",
           "legendFormat": "{{http_status_code}}",
           "refId": "A"
         }
       ],
       "title": "HTTP Status Codes (1h)",
       "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "bars",
+            "fillOpacity": 100,
+            "gradientMode": "none",
+            "hideFrom": {
+              "tooltip": false,
+              "viz": false,
+              "legend": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 13
+      },
+      "id": 7,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "sum by(http_route) (increase(otel_http_server_duration_milliseconds_count{job=\"nextjs-frontend\"}[5m]))",
+          "legendFormat": "{{http_route}}",
+          "refId": "A"
+        }
+      ],
+      "title": "Popular Routes (5m)",
+      "type": "timeseries"
     },
     {
       "datasource": {
@@ -490,9 +576,9 @@
         "h": 9,
         "w": 24,
         "x": 0,
-        "y": 17
+        "y": 21
       },
-      "id": 7,
+      "id": 8,
       "targets": [
         {
           "datasource": {
@@ -500,7 +586,7 @@
             "uid": "tempo"
           },
           "limit": 20,
-          "query": "{service.name=\"python-service\"}",
+          "query": "{service.name=\"nextjs-frontend\"}",
           "queryType": "traceql",
           "refId": "A"
         }
@@ -512,7 +598,7 @@
   "refresh": "5s",
   "schemaVersion": 38,
   "style": "dark",
-  "tags": ["python", "service", "observability"],
+  "tags": ["nextjs", "frontend", "observability"],
   "templating": {
     "list": []
   },
@@ -522,8 +608,8 @@
   },
   "timepicker": {},
   "timezone": "",
-  "title": "Python Service",
-  "uid": "python-service",
+  "title": "Next.js Frontend",
+  "uid": "nextjs-frontend",
   "version": 0,
   "weekStart": ""
 }

@@ -17,13 +17,14 @@ datasources:
     editable: false
     jsonData:
       tracesToLogsV2:
-        datasourceUid: 'Quickwit'
+        datasourceUid: 'elasticsearch'
         filterBySpanID: false
         filterByTraceID: true
-        customQuery: false
+        customQuery: true
+        query: 'TraceId:"$${__span.traceId}"'
         tags: ['service_name']
       tracesToMetrics:
-        datasourceUid: 'Prometheus'
+        datasourceUid: 'prometheus'
         tags:
           - key: 'service.name'
             value: 'service'
@@ -35,6 +36,22 @@ datasources:
       search:
         hide: false
       serviceMap:
-        datasourceUid: 'Prometheus'
+        datasourceUid: 'prometheus'
+
+  - name: Elasticsearch
+    type: elasticsearch
+    uid: elasticsearch
+    access: proxy
+    url: http://elasticsearch:9200
+    editable: false
+    jsonData:
+      esVersion: "8.11.0"
+      index: otel-logs
+      timeField: "@timestamp"
+      logMessageField: Body
+      logLevelField: SeverityText
+      interval: Daily
+      timeInterval: "10s"
+
 
 

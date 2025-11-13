@@ -5,7 +5,7 @@ global:
     cluster: 'observability-stack'
 
 scrape_configs:
-  # OTEL Collector metrics
+  # OTEL Collector metrics - all service metrics are exported here
   - job_name: 'otel-collector'
     static_configs:
       - targets: ['otel-collector:8889']
@@ -16,24 +16,3 @@ scrape_configs:
   - job_name: 'prometheus'
     static_configs:
       - targets: ['localhost:9090']
-
-  # Python service
-  - job_name: 'python-service'
-    static_configs:
-      - targets: ['python-service:8000']
-        labels:
-          service: 'python-service'
-
-  # Go service
-  - job_name: 'go-service'
-    static_configs:
-      - targets: ['go-service:8000']
-        labels:
-          service: 'go-service'
-
-  # Rust service
-  - job_name: 'rust-service'
-    static_configs:
-      - targets: ['rust-service:8000']
-        labels:
-          service: 'rust-service'

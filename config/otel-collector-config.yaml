@@ -40,6 +40,8 @@ exporters:
     namespace: "otel"
     const_labels:
       environment: "dev"
+    resource_to_telemetry_conversion:
+      enabled: true
 
   # Tempo exporter for traces
   otlp/tempo:
@@ -51,11 +53,10 @@ exporters:
   logging:
     loglevel: debug
 
-  # OTLP HTTP exporter for logs to Quickwit
-  otlphttp/quickwit:
-    endpoint: http://quickwit:7280/api/v1/otel-logs-v0_7/ingest
-    tls:
-      insecure: true
+  # Elasticsearch exporter for logs
+  elasticsearch:
+    endpoints: [http://elasticsearch:9200]
+    logs_index: otel-logs
 
 service:
   pipelines:
@@ -72,7 +73,7 @@ service:
     logs:
       receivers: [otlp]
       processors: [batch, resource, attributes]
-      exporters: [otlphttp/quickwit, logging]
+      exporters: [elasticsearch, logging]
 
   telemetry:
     logs:

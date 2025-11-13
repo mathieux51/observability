@@ -101,12 +101,12 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "sum(rate(otel_http_server_duration_milliseconds_count{job=\"python-service\"}[1m])) by (http_route)",
+          "expr": "sum(rate(otel_http_server_duration_milliseconds_count{job=\"rust-service\"}[1m])) by (http_route)",
           "legendFormat": "{{http_route}}",
           "refId": "A"
         }
       ],
-      "title": "Python Service - Request Rate by Endpoint",
+      "title": "Rust Service - Request Rate by Endpoint",
       "type": "timeseries"
     },
     {
@@ -196,7 +196,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "histogram_quantile(0.50, sum(rate(otel_http_server_duration_milliseconds_bucket{job=\"python-service\"}[5m])) by (le, http_route))",
+          "expr": "histogram_quantile(0.50, sum(rate(otel_http_server_duration_milliseconds_bucket{job=\"rust-service\"}[5m])) by (le, http_route))",
           "legendFormat": "P50 - {{http_route}}",
           "refId": "A"
         },
@@ -205,7 +205,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "histogram_quantile(0.95, sum(rate(otel_http_server_duration_milliseconds_bucket{job=\"python-service\"}[5m])) by (le, http_route))",
+          "expr": "histogram_quantile(0.95, sum(rate(otel_http_server_duration_milliseconds_bucket{job=\"rust-service\"}[5m])) by (le, http_route))",
           "legendFormat": "P95 - {{http_route}}",
           "refId": "B"
         },
@@ -214,12 +214,12 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "histogram_quantile(0.99, sum(rate(otel_http_server_duration_milliseconds_bucket{job=\"python-service\"}[5m])) by (le, http_route))",
+          "expr": "histogram_quantile(0.99, sum(rate(otel_http_server_duration_milliseconds_bucket{job=\"rust-service\"}[5m])) by (le, http_route))",
           "legendFormat": "P99 - {{http_route}}",
           "refId": "C"
         }
       ],
-      "title": "Python Service - Response Time Percentiles",
+      "title": "Rust Service - Response Time Percentiles",
       "type": "timeseries"
     },
     {
@@ -272,7 +272,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "sum(increase(otel_http_server_duration_milliseconds_count{job=\"python-service\"}[1h]))",
+          "expr": "sum(increase(otel_http_server_duration_milliseconds_count{job=\"rust-service\"}[1h]))",
           "refId": "A"
         }
       ],
@@ -337,7 +337,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "histogram_quantile(0.95, sum(rate(otel_http_server_duration_milliseconds_bucket{job=\"python-service\"}[5m])) by (le))",
+          "expr": "histogram_quantile(0.95, sum(rate(otel_http_server_duration_milliseconds_bucket{job=\"rust-service\"}[5m])) by (le))",
           "refId": "A"
         }
       ],
@@ -413,7 +413,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "up{job=\"python-service\"}",
+          "expr": "up{job=\"rust-service\"}",
           "refId": "A"
         }
       ],
@@ -473,7 +473,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "sum by(http_status_code) (increase(otel_http_server_duration_milliseconds_count{job=\"python-service\"}[1h]))",
+          "expr": "sum by(http_status_code) (increase(otel_http_server_duration_milliseconds_count{job=\"rust-service\"}[1h]))",
           "legendFormat": "{{http_status_code}}",
           "refId": "A"
         }
@@ -500,7 +500,7 @@
             "uid": "tempo"
           },
           "limit": 20,
-          "query": "{service.name=\"python-service\"}",
+          "query": "{service.name=\"rust-service\"}",
           "queryType": "traceql",
           "refId": "A"
         }
@@ -512,7 +512,7 @@
   "refresh": "5s",
   "schemaVersion": 38,
   "style": "dark",
-  "tags": ["python", "service", "observability"],
+  "tags": ["rust", "service", "observability"],
   "templating": {
     "list": []
   },
@@ -522,8 +522,8 @@
   },
   "timepicker": {},
   "timezone": "",
-  "title": "Python Service",
-  "uid": "python-service",
+  "title": "Rust Service",
+  "uid": "rust-service",
   "version": 0,
   "weekStart": ""
 }

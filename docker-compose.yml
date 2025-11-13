@@ -49,36 +49,26 @@ services:
     networks:
       - observability
 
-  # Quickwit for logs
-  quickwit:
-    image: quickwit/quickwit:0.7.1
-    container_name: quickwit
-    command: ["run"]
+  # Elasticsearch for logs
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.11.0
+    container_name: elasticsearch
     environment:
-      - QW_ENABLE_OPENTELEMETRY_OTLP_EXPORTER=true
-      - QUICKWIT_METASTORE_URI=postgres://quickwit:quickwit@postgres:5432/quickwit
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - action.destructive_requires_name=false
     volumes:
-      - ./config/quickwit:/quickwit/config
-      - quickwit-data:/quickwit/qwdata
+      - elasticsearch-data:/usr/share/elasticsearch/data
     ports:
-      - "7280:7280"   # HTTP API
-    depends_on:
-      - postgres
+      - "9200:9200"
     networks:
       - observability
-
-  # PostgreSQL for Quickwit metastore
-  postgres:
-    image: postgres:15-alpine
-    container_name: postgres
-    environment:
-      - POSTGRES_USER=quickwit
-      - POSTGRES_PASSWORD=quickwit
-      - POSTGRES_DB=quickwit
-    volumes:
-      - postgres-data:/var/lib/postgresql/data
-    networks:
-      - observability
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:9200/_cluster/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
 
   # Grafana for visualization
   grafana:
@@ -97,7 +87,7 @@ services:
     depends_on:
       - prometheus
       - tempo
-      - quickwit
+      - elasticsearch
     networks:
       - observability
 
@@ -106,7 +96,7 @@ services:
     build: ./services/python-service
     container_name: python-service
     environment:
-      - OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4317
+      - OTEL_EXPORTER_OTLP_ENDPOINT=otel-collector:4317
       - OTEL_SERVICE_NAME=python-service
       - OTEL_RESOURCE_ATTRIBUTES=service.name=python-service,service.version=1.0.0
     ports:
@@ -121,7 +111,7 @@ services:
     build: ./services/go-service
     container_name: go-service
     environment:
-      - OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4317
+      - OTEL_EXPORTER_OTLP_ENDPOINT=otel-collector:4317
       - OTEL_SERVICE_NAME=go-service
       - OTEL_RESOURCE_ATTRIBUTES=service.name=go-service,service.version=1.0.0
     ports:
@@ -136,7 +126,7 @@ services:
     build: ./services/rust-service
     container_name: rust-service
     environment:
-      - OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4317
+      - OTEL_EXPORTER_OTLP_ENDPOINT=otel-collector:4317
       - OTEL_SERVICE_NAME=rust-service
       - OTEL_RESOURCE_ATTRIBUTES=service.name=rust-service,service.version=1.0.0
     ports:
@@ -168,8 +158,7 @@ services:
 volumes:
   prometheus-data:
   tempo-data:
-  quickwit-data:
-  postgres-data:
+  elasticsearch-data:
   grafana-data:
 
 networks:

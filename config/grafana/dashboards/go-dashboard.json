@@ -101,12 +101,12 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "sum(rate(otel_http_server_duration_milliseconds_count{job=\"python-service\"}[1m])) by (http_route)",
+          "expr": "sum(rate(otel_http_server_duration_milliseconds_count{job=\"go-service\"}[1m])) by (http_route)",
           "legendFormat": "{{http_route}}",
           "refId": "A"
         }
       ],
-      "title": "Python Service - Request Rate by Endpoint",
+      "title": "Go Service - Request Rate by Endpoint",
       "type": "timeseries"
     },
     {
@@ -196,7 +196,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "histogram_quantile(0.50, sum(rate(otel_http_server_duration_milliseconds_bucket{job=\"python-service\"}[5m])) by (le, http_route))",
+          "expr": "histogram_quantile(0.50, sum(rate(otel_http_server_duration_milliseconds_bucket{job=\"go-service\"}[5m])) by (le, http_route))",
           "legendFormat": "P50 - {{http_route}}",
           "refId": "A"
         },
@@ -205,7 +205,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "histogram_quantile(0.95, sum(rate(otel_http_server_duration_milliseconds_bucket{job=\"python-service\"}[5m])) by (le, http_route))",
+          "expr": "histogram_quantile(0.95, sum(rate(otel_http_server_duration_milliseconds_bucket{job=\"go-service\"}[5m])) by (le, http_route))",
           "legendFormat": "P95 - {{http_route}}",
           "refId": "B"
         },
@@ -214,12 +214,12 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "histogram_quantile(0.99, sum(rate(otel_http_server_duration_milliseconds_bucket{job=\"python-service\"}[5m])) by (le, http_route))",
+          "expr": "histogram_quantile(0.99, sum(rate(otel_http_server_duration_milliseconds_bucket{job=\"go-service\"}[5m])) by (le, http_route))",
           "legendFormat": "P99 - {{http_route}}",
           "refId": "C"
         }
       ],
-      "title": "Python Service - Response Time Percentiles",
+      "title": "Go Service - Response Time Percentiles",
       "type": "timeseries"
     },
     {
@@ -272,7 +272,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "sum(increase(otel_http_server_duration_milliseconds_count{job=\"python-service\"}[1h]))",
+          "expr": "sum(increase(otel_http_server_duration_milliseconds_count{job=\"go-service\"}[1h]))",
           "refId": "A"
         }
       ],
@@ -337,7 +337,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "histogram_quantile(0.95, sum(rate(otel_http_server_duration_milliseconds_bucket{job=\"python-service\"}[5m])) by (le))",
+          "expr": "histogram_quantile(0.95, sum(rate(otel_http_server_duration_milliseconds_bucket{job=\"go-service\"}[5m])) by (le))",
           "refId": "A"
         }
       ],
@@ -413,12 +413,195 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "up{job=\"python-service\"}",
+          "expr": "up{job=\"go-service\"}",
           "refId": "A"
         }
       ],
       "title": "Service Status",
       "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 20,
+            "gradientMode": "none",
+            "hideFrom": {
+              "tooltip": false,
+              "viz": false,
+              "legend": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 9
+      },
+      "id": 6,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "go_goroutines{job=\"go-service\"}",
+          "legendFormat": "Goroutines",
+          "refId": "A"
+        }
+      ],
+      "title": "Go Runtime - Goroutines",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 20,
+            "gradientMode": "none",
+            "hideFrom": {
+              "tooltip": false,
+              "viz": false,
+              "legend": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "bytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 13
+      },
+      "id": 7,
+      "options": {
+        "legend": {
+          "calcs": ["lastNotNull"],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "go_memstats_heap_alloc_bytes{job=\"go-service\"}",
+          "legendFormat": "Heap Allocated",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "go_memstats_heap_inuse_bytes{job=\"go-service\"}",
+          "legendFormat": "Heap In Use",
+          "refId": "B"
+        }
+      ],
+      "title": "Go Runtime - Memory",
+      "type": "timeseries"
     },
     {
       "datasource": {
@@ -445,9 +628,9 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 9
+        "y": 17
       },
-      "id": 6,
+      "id": 8,
       "options": {
         "displayLabels": ["percent"],
         "legend": {
@@ -473,7 +656,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "sum by(http_status_code) (increase(otel_http_server_duration_milliseconds_count{job=\"python-service\"}[1h]))",
+          "expr": "sum by(http_status_code) (increase(otel_http_server_duration_milliseconds_count{job=\"go-service\"}[1h]))",
           "legendFormat": "{{http_status_code}}",
           "refId": "A"
         }
@@ -490,9 +673,9 @@
         "h": 9,
         "w": 24,
         "x": 0,
-        "y": 17
+        "y": 21
       },
-      "id": 7,
+      "id": 9,
       "targets": [
         {
           "datasource": {
@@ -500,7 +683,7 @@
             "uid": "tempo"
           },
           "limit": 20,
-          "query": "{service.name=\"python-service\"}",
+          "query": "{service.name=\"go-service\"}",
           "queryType": "traceql",
           "refId": "A"
         }
@@ -512,7 +695,7 @@
   "refresh": "5s",
   "schemaVersion": 38,
   "style": "dark",
-  "tags": ["python", "service", "observability"],
+  "tags": ["go", "service", "observability"],
   "templating": {
     "list": []
   },
@@ -522,8 +705,8 @@
   },
   "timepicker": {},
   "timezone": "",
-  "title": "Python Service",
-  "uid": "python-service",
+  "title": "Go Service",
+  "uid": "go-service",
   "version": 0,
   "weekStart": ""
 }
