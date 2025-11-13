@@ -1,0 +1,39 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  external_labels:
+    cluster: 'observability-stack'
+
+scrape_configs:
+  # OTEL Collector metrics
+  - job_name: 'otel-collector'
+    static_configs:
+      - targets: ['otel-collector:8889']
+        labels:
+          service: 'otel-collector'
+
+  # Prometheus self-monitoring
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  # Python service
+  - job_name: 'python-service'
+    static_configs:
+      - targets: ['python-service:8000']
+        labels:
+          service: 'python-service'
+
+  # Go service
+  - job_name: 'go-service'
+    static_configs:
+      - targets: ['go-service:8000']
+        labels:
+          service: 'go-service'
+
+  # Rust service
+  - job_name: 'rust-service'
+    static_configs:
+      - targets: ['rust-service:8000']
+        labels:
+          service: 'rust-service'

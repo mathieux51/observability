@@ -1,0 +1,7 @@
+version: 0.7
+
+metastore_uri: postgres://quickwit:quickwit@postgres:5432/quickwit
+
+default_index_root_uri: file:///quickwit/qwdata
+
+node_id: quickwit-node-1
