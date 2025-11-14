@@ -25,7 +25,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "prometheus"
+        "uid": "PBFA97CFB590B2093"
       },
       "fieldConfig": {
         "defaults": {
@@ -85,7 +85,11 @@
       "id": 1,
       "options": {
         "legend": {
-          "calcs": ["mean", "lastNotNull", "max"],
+          "calcs": [
+            "mean",
+            "lastNotNull",
+            "max"
+          ],
           "displayMode": "table",
           "placement": "bottom",
           "showLegend": true
@@ -99,7 +103,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "prometheus"
+            "uid": "PBFA97CFB590B2093"
           },
           "expr": "sum(rate(otel_http_server_duration_milliseconds_count{job=\"nextjs-frontend\"}[1m])) by (http_route)",
           "legendFormat": "{{http_route}}",
@@ -112,7 +116,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "prometheus"
+        "uid": "PBFA97CFB590B2093"
       },
       "fieldConfig": {
         "defaults": {
@@ -180,7 +184,11 @@
       "id": 2,
       "options": {
         "legend": {
-          "calcs": ["mean", "lastNotNull", "max"],
+          "calcs": [
+            "mean",
+            "lastNotNull",
+            "max"
+          ],
           "displayMode": "table",
           "placement": "bottom",
           "showLegend": true
@@ -194,7 +202,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "prometheus"
+            "uid": "PBFA97CFB590B2093"
           },
           "expr": "histogram_quantile(0.50, sum(rate(otel_http_server_duration_milliseconds_bucket{job=\"nextjs-frontend\"}[5m])) by (le, http_route))",
           "legendFormat": "P50 - {{http_route}}",
@@ -203,7 +211,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "prometheus"
+            "uid": "PBFA97CFB590B2093"
           },
           "expr": "histogram_quantile(0.95, sum(rate(otel_http_server_duration_milliseconds_bucket{job=\"nextjs-frontend\"}[5m])) by (le, http_route))",
           "legendFormat": "P95 - {{http_route}}",
@@ -212,7 +220,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "prometheus"
+            "uid": "PBFA97CFB590B2093"
           },
           "expr": "histogram_quantile(0.99, sum(rate(otel_http_server_duration_milliseconds_bucket{job=\"nextjs-frontend\"}[5m])) by (le, http_route))",
           "legendFormat": "P99 - {{http_route}}",
@@ -225,7 +233,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "prometheus"
+        "uid": "PBFA97CFB590B2093"
       },
       "fieldConfig": {
         "defaults": {
@@ -259,7 +267,9 @@
         "justifyMode": "auto",
         "orientation": "auto",
         "reduceOptions": {
-          "calcs": ["lastNotNull"],
+          "calcs": [
+            "lastNotNull"
+          ],
           "fields": "",
           "values": false
         },
@@ -270,7 +280,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "prometheus"
+            "uid": "PBFA97CFB590B2093"
           },
           "expr": "sum(increase(otel_http_server_duration_milliseconds_count{job=\"nextjs-frontend\"}[1h]))",
           "refId": "A"
@@ -282,7 +292,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "prometheus"
+        "uid": "PBFA97CFB590B2093"
       },
       "fieldConfig": {
         "defaults": {
@@ -324,7 +334,9 @@
         "justifyMode": "auto",
         "orientation": "auto",
         "reduceOptions": {
-          "calcs": ["lastNotNull"],
+          "calcs": [
+            "lastNotNull"
+          ],
           "fields": "",
           "values": false
         },
@@ -335,7 +347,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "prometheus"
+            "uid": "PBFA97CFB590B2093"
           },
           "expr": "histogram_quantile(0.95, sum(rate(otel_http_server_duration_milliseconds_bucket{job=\"nextjs-frontend\"}[5m])) by (le))",
           "refId": "A"
@@ -347,7 +359,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "prometheus"
+        "uid": "PBFA97CFB590B2093"
       },
       "fieldConfig": {
         "defaults": {
@@ -400,7 +412,9 @@
         "justifyMode": "auto",
         "orientation": "auto",
         "reduceOptions": {
-          "calcs": ["lastNotNull"],
+          "calcs": [
+            "lastNotNull"
+          ],
           "fields": "",
           "values": false
         },
@@ -411,7 +425,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "prometheus"
+            "uid": "PBFA97CFB590B2093"
           },
           "expr": "up{job=\"nextjs-frontend\"}",
           "refId": "A"
@@ -423,7 +437,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "prometheus"
+        "uid": "PBFA97CFB590B2093"
       },
       "fieldConfig": {
         "defaults": {
@@ -449,16 +463,22 @@
       },
       "id": 6,
       "options": {
-        "displayLabels": ["percent"],
+        "displayLabels": [
+          "percent"
+        ],
         "legend": {
           "displayMode": "table",
           "placement": "bottom",
           "showLegend": true,
-          "values": ["value"]
+          "values": [
+            "value"
+          ]
         },
         "pieType": "donut",
         "reduceOptions": {
-          "calcs": ["lastNotNull"],
+          "calcs": [
+            "lastNotNull"
+          ],
           "fields": "",
           "values": false
         },
@@ -471,7 +491,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "prometheus"
+            "uid": "PBFA97CFB590B2093"
           },
           "expr": "sum by(http_status_code) (increase(otel_http_server_duration_milliseconds_count{job=\"nextjs-frontend\"}[1h]))",
           "legendFormat": "{{http_status_code}}",
@@ -484,7 +504,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "prometheus"
+        "uid": "PBFA97CFB590B2093"
       },
       "fieldConfig": {
         "defaults": {
@@ -557,7 +577,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "prometheus"
+            "uid": "PBFA97CFB590B2093"
           },
           "expr": "sum by(http_route) (increase(otel_http_server_duration_milliseconds_count{job=\"nextjs-frontend\"}[5m]))",
           "legendFormat": "{{http_route}}",
@@ -570,7 +590,7 @@
     {
       "datasource": {
         "type": "tempo",
-        "uid": "tempo"
+        "uid": "P214B5B846CF3925F"
       },
       "gridPos": {
         "h": 9,
@@ -583,7 +603,7 @@
         {
           "datasource": {
             "type": "tempo",
-            "uid": "tempo"
+            "uid": "P214B5B846CF3925F"
           },
           "limit": 20,
           "query": "{service.name=\"nextjs-frontend\"}",
@@ -598,7 +618,11 @@
   "refresh": "5s",
   "schemaVersion": 38,
   "style": "dark",
-  "tags": ["nextjs", "frontend", "observability"],
+  "tags": [
+    "nextjs",
+    "frontend",
+    "observability"
+  ],
   "templating": {
     "list": []
   },

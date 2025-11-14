@@ -39,14 +39,14 @@
             "axisPlacement": "auto",
             "barAlignment": 0,
             "drawStyle": "line",
-            "fillOpacity": 10,
-            "gradientMode": "none",
+            "fillOpacity": 20,
+            "gradientMode": "opacity",
             "hideFrom": {
               "tooltip": false,
               "viz": false,
               "legend": false
             },
-            "lineInterpolation": "linear",
+            "lineInterpolation": "smooth",
             "lineWidth": 2,
             "pointSize": 5,
             "scaleDistribution": {
@@ -77,7 +77,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 8,
+        "h": 9,
         "w": 12,
         "x": 0,
         "y": 0
@@ -87,7 +87,8 @@
         "legend": {
           "calcs": [
             "mean",
-            "lastNotNull"
+            "lastNotNull",
+            "max"
           ],
           "displayMode": "table",
           "placement": "bottom",
@@ -104,39 +105,12 @@
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
-          "expr": "sum(rate(otel_http_server_duration_milliseconds_count{service_name=\"python-service\"}[1m]))",
-          "legendFormat": "Python Service",
+          "expr": "sum(rate(otel_http_request_duration_seconds_count{job=\"python-service\"}[1m])) by (endpoint)",
+          "legendFormat": "{{endpoint}}",
           "refId": "A"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
-          },
-          "expr": "sum(rate(otel_http_server_duration_milliseconds_count{service_name=\"go-service\"}[1m]))",
-          "legendFormat": "Go Service",
-          "refId": "B"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
-          },
-          "expr": "sum(rate(otel_http_server_duration_milliseconds_count{service_name=\"rust-service\"}[1m]))",
-          "legendFormat": "Rust Service",
-          "refId": "C"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
-          },
-          "expr": "sum(rate(otel_http_server_duration_milliseconds_count{service_name=\"nextjs-frontend\"}[1m]))",
-          "legendFormat": "Next.js Frontend",
-          "refId": "D"
         }
       ],
-      "title": "Request Rate (all services)",
+      "title": "Python Service - Request Rate by Endpoint",
       "type": "timeseries"
     },
     {
@@ -156,14 +130,14 @@
             "axisPlacement": "auto",
             "barAlignment": 0,
             "drawStyle": "line",
-            "fillOpacity": 10,
-            "gradientMode": "none",
+            "fillOpacity": 20,
+            "gradientMode": "opacity",
             "hideFrom": {
               "tooltip": false,
               "viz": false,
               "legend": false
             },
-            "lineInterpolation": "linear",
+            "lineInterpolation": "smooth",
             "lineWidth": 2,
             "pointSize": 5,
             "scaleDistribution": {
@@ -176,7 +150,7 @@
               "mode": "none"
             },
             "thresholdsStyle": {
-              "mode": "off"
+              "mode": "line"
             }
           },
           "mappings": [],
@@ -189,20 +163,20 @@
               },
               {
                 "color": "yellow",
-                "value": 0.1
+                "value": 100
               },
               {
                 "color": "red",
-                "value": 0.5
+                "value": 500
               }
             ]
           },
-          "unit": "s"
+          "unit": "ms"
         },
         "overrides": []
       },
       "gridPos": {
-        "h": 8,
+        "h": 9,
         "w": 12,
         "x": 12,
         "y": 0
@@ -212,6 +186,7 @@
         "legend": {
           "calcs": [
             "mean",
+            "lastNotNull",
             "max"
           ],
           "displayMode": "table",
@@ -229,8 +204,8 @@
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
-          "expr": "histogram_quantile(0.95, sum(rate(otel_http_server_duration_milliseconds_bucket{service_name=\"python-service\"}[5m])) by (le))",
-          "legendFormat": "Python Service - P95",
+          "expr": "histogram_quantile(0.50, sum(rate(otel_http_request_duration_seconds_bucket{job=\"python-service\"}[5m])) by (le, endpoint))",
+          "legendFormat": "P50 - {{endpoint}}",
           "refId": "A"
         },
         {
@@ -238,8 +213,8 @@
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
-          "expr": "histogram_quantile(0.95, sum(rate(otel_http_server_duration_milliseconds_bucket{service_name=\"go-service\"}[5m])) by (le))",
-          "legendFormat": "Go Service - P95",
+          "expr": "histogram_quantile(0.95, sum(rate(otel_http_request_duration_seconds_bucket{job=\"python-service\"}[5m])) by (le, endpoint))",
+          "legendFormat": "P95 - {{endpoint}}",
           "refId": "B"
         },
         {
@@ -247,21 +222,12 @@
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
-          "expr": "histogram_quantile(0.95, sum(rate(otel_http_server_duration_milliseconds_bucket{service_name=\"rust-service\"}[5m])) by (le))",
-          "legendFormat": "Rust Service - P95",
+          "expr": "histogram_quantile(0.99, sum(rate(otel_http_request_duration_seconds_bucket{job=\"python-service\"}[5m])) by (le, endpoint))",
+          "legendFormat": "P99 - {{endpoint}}",
           "refId": "C"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
-          },
-          "expr": "histogram_quantile(0.95, sum(rate(otel_http_server_duration_milliseconds_bucket{service_name=\"nextjs-frontend\"}[5m])) by (le))",
-          "legendFormat": "Next.js Frontend - P95",
-          "refId": "D"
         }
       ],
-      "title": "P95 Latency (all services)",
+      "title": "Python Service - Response Time Percentiles",
       "type": "timeseries"
     },
     {
@@ -283,15 +249,16 @@
                 "value": null
               }
             ]
-          }
+          },
+          "unit": "short"
         },
         "overrides": []
       },
       "gridPos": {
         "h": 4,
-        "w": 6,
+        "w": 4,
         "x": 0,
-        "y": 8
+        "y": 9
       },
       "id": 3,
       "options": {
@@ -315,11 +282,11 @@
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
-          "expr": "sum(increase(otel_http_server_duration_milliseconds_count{service_name=\"python-service\"}[1h]))",
+          "expr": "sum(increase(otel_http_request_duration_seconds_count{job=\"python-service\"}[1h]))",
           "refId": "A"
         }
       ],
-      "title": "Python - Total Requests (1h)",
+      "title": "Total Requests (1h)",
       "type": "stat"
     },
     {
@@ -339,21 +306,30 @@
               {
                 "color": "green",
                 "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 100
+              },
+              {
+                "color": "red",
+                "value": 500
               }
             ]
-          }
+          },
+          "unit": "ms"
         },
         "overrides": []
       },
       "gridPos": {
         "h": 4,
-        "w": 6,
-        "x": 6,
-        "y": 8
+        "w": 4,
+        "x": 4,
+        "y": 9
       },
       "id": 4,
       "options": {
-        "colorMode": "background",
+        "colorMode": "value",
         "graphMode": "area",
         "justifyMode": "auto",
         "orientation": "auto",
@@ -373,11 +349,11 @@
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
-          "expr": "sum(increase(otel_http_server_duration_milliseconds_count{service_name=\"go-service\"}[1h]))",
+          "expr": "histogram_quantile(0.95, sum(rate(otel_http_request_duration_seconds_bucket{job=\"python-service\"}[5m])) by (le))",
           "refId": "A"
         }
       ],
-      "title": "Go - Total Requests (1h)",
+      "title": "P95 Latency",
       "type": "stat"
     },
     {
@@ -390,13 +366,33 @@
           "color": {
             "mode": "thresholds"
           },
-          "mappings": [],
+          "mappings": [
+            {
+              "options": {
+                "0": {
+                  "color": "red",
+                  "index": 1,
+                  "text": "DOWN"
+                },
+                "1": {
+                  "color": "green",
+                  "index": 0,
+                  "text": "UP"
+                }
+              },
+              "type": "value"
+            }
+          ],
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
+                "color": "red",
                 "value": null
+              },
+              {
+                "color": "green",
+                "value": 1
               }
             ]
           }
@@ -405,14 +401,14 @@
       },
       "gridPos": {
         "h": 4,
-        "w": 6,
-        "x": 12,
-        "y": 8
+        "w": 4,
+        "x": 8,
+        "y": 9
       },
       "id": 5,
       "options": {
         "colorMode": "background",
-        "graphMode": "area",
+        "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "auto",
         "reduceOptions": {
@@ -431,11 +427,11 @@
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
-          "expr": "sum(increase(otel_http_server_duration_milliseconds_count{service_name=\"rust-service\"}[1h]))",
+          "expr": "up{job=\"python-service\"}",
           "refId": "A"
         }
       ],
-      "title": "Rust - Total Requests (1h)",
+      "title": "Service Status",
       "type": "stat"
     },
     {
@@ -446,33 +442,39 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "thresholds"
+            "mode": "palette-classic"
           },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              }
-            ]
-          }
+          "custom": {
+            "hideFrom": {
+              "tooltip": false,
+              "viz": false,
+              "legend": false
+            }
+          },
+          "mappings": []
         },
         "overrides": []
       },
       "gridPos": {
-        "h": 4,
-        "w": 6,
-        "x": 18,
-        "y": 8
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 9
       },
       "id": 6,
       "options": {
-        "colorMode": "background",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
+        "displayLabels": [
+          "percent"
+        ],
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "values": [
+            "value"
+          ]
+        },
+        "pieType": "donut",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -480,21 +482,24 @@
           "fields": "",
           "values": false
         },
-        "textMode": "auto"
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
       },
-      "pluginVersion": "10.2.2",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
-          "expr": "sum(increase(otel_http_server_duration_milliseconds_count{service_name=\"nextjs-frontend\"}[1h]))",
+          "expr": "sum by(http_status_code) (increase(otel_http_request_duration_seconds_count{job=\"python-service\"}[1h]))",
+          "legendFormat": "{{http_status_code}}",
           "refId": "A"
         }
       ],
-      "title": "Next.js - Total Requests (1h)",
-      "type": "stat"
+      "title": "HTTP Status Codes (1h)",
+      "type": "piechart"
     },
     {
       "datasource": {
@@ -502,10 +507,10 @@
         "uid": "P214B5B846CF3925F"
       },
       "gridPos": {
-        "h": 8,
+        "h": 9,
         "w": 24,
         "x": 0,
-        "y": 12
+        "y": 17
       },
       "id": 7,
       "targets": [
@@ -515,12 +520,12 @@
             "uid": "P214B5B846CF3925F"
           },
           "limit": 20,
-          "query": "{service.name=\"python-service\" || service.name=\"go-service\" || service.name=\"rust-service\" || service.name=\"nextjs-frontend\"}",
+          "query": "{service.name=\"python-service\"}",
           "queryType": "traceql",
           "refId": "A"
         }
       ],
-      "title": "Recent Traces (All Services)",
+      "title": "Recent Traces",
       "type": "traces"
     }
   ],
@@ -528,8 +533,8 @@
   "schemaVersion": 38,
   "style": "dark",
   "tags": [
-    "services",
-    "overview",
+    "python",
+    "service",
     "observability"
   ],
   "templating": {
@@ -541,8 +546,8 @@
   },
   "timepicker": {},
   "timezone": "",
-  "title": "Services Overview",
-  "uid": "services-overview",
+  "title": "Python Service",
+  "uid": "python-service",
   "version": 0,
   "weekStart": ""
 }

@@ -44,12 +44,38 @@ docker-compose up --build -d
 
 ### Testing the Stack
 
+#### Option 1: Using the Frontend (Manual)
+
 1. Open the frontend at http://localhost:3001
 2. Click the buttons to make requests to each backend service
 3. View the data in Grafana:
    - Go to http://localhost:3000
-   - Navigate to Explore
+   - Navigate to Explore or Dashboards
    - Select different data sources (Prometheus, Tempo, Quickwit)
+
+#### Option 2: Using the Traffic Generator (Automated)
+
+Generate realistic traffic patterns automatically:
+
+```bash
+# Generate traffic for 5 minutes at 2 requests/second (default)
+./generate-traffic.sh
+
+# Generate traffic for 10 minutes at 5 requests/second
+./generate-traffic.sh 600 5
+
+# Generate traffic for 1 minute at 10 requests/second
+./generate-traffic.sh 60 10
+```
+
+The traffic generator simulates realistic user journeys including:
+- Dashboard loading (hitting all services)
+- Data fetching from individual services
+- Error scenarios for testing error tracking
+- Heavy load patterns on specific services
+- Random traffic distribution
+
+Usage: `./generate-traffic.sh [duration_seconds] [requests_per_second]`
 
 ## Features
 

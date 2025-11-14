@@ -126,7 +126,7 @@ services:
     build: ./services/rust-service
     container_name: rust-service
     environment:
-      - OTEL_EXPORTER_OTLP_ENDPOINT=otel-collector:4317
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4317
       - OTEL_SERVICE_NAME=rust-service
       - OTEL_RESOURCE_ATTRIBUTES=service.name=rust-service,service.version=1.0.0
     ports:
